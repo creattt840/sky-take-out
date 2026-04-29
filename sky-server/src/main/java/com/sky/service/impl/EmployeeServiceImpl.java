@@ -125,4 +125,34 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(employee);
     }
 
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(long id) {
+        Employee employee=employeeMapper.getById(id);
+        employee.setPassword("****");
+        return employee;
+    }
+
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     */
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        //因为其他的不修改只修改DTO传过来的参数所以要拷贝一份到空的employee中
+        Employee employee = new Employee();
+        //使用BeanUtils里面的copyProperties方法将第一个参数拷贝给第二个参数
+        BeanUtils.copyProperties(employeeDTO,employee);
+
+        //修改更新时间
+        employee.setUpdateTime(LocalDateTime.now());
+        //修改更新的人
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
+
 }
