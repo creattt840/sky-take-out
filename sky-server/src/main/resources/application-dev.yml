@@ -11,3 +11,6 @@ sky:
     access-key-id: LTAI5t8PfGkVrnMvwsV6FVW4
     access-key-secret: KbFdhj10XppHn3NbTDfFIOSW92aLTH
     bucket-name: canqiong-web
+  redis:
+    host: localhost
+    port: 6379
