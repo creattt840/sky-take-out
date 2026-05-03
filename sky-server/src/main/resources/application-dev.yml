@@ -14,3 +14,6 @@ sky:
   redis:
     host: localhost
     port: 6379
+  wechat:
+    appid: wxec14daf78de5344d
+    secret: e0b4c4d66c45339b3201c842da2c65b2
