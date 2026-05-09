@@ -12,6 +12,18 @@ spring:
       url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${sky.datasource.username}
       password: ${sky.datasource.password}
+      # 开启空闲连接检测
+      keep-alive: true
+      # 空闲检测间隔（毫秒），建议 30000-60000
+      time-between-eviction-runs-millis: 30000
+      # 连接最小空闲时间（毫秒），超过则检测是否有效
+      min-evictable-idle-time-millis: 30000
+      # 检测连接是否有效的 SQL
+      validation-query: SELECT 1
+      # 申请连接时检测
+      test-while-idle: true
+      # 归还连接时检测（可选，性能开销略大）
+      test-on-borrow: false
   redis:
     host: ${sky.redis.host}
     port: ${sky.redis.port}
