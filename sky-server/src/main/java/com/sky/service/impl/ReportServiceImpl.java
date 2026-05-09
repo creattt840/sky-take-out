@@ -1,9 +1,11 @@
 package com.sky.service.impl;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -159,6 +162,31 @@ public class ReportServiceImpl implements ReportService {
                 .build();
     }
 
+    /**
+     * 统计指定时间区间内的销量排名前10
+     * @param begin
+     * @param end
+     * @return
+     */
+    @Override
+    public SalesTop10ReportVO getSalesTop10(LocalDate begin, LocalDate end) {
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+
+
+        List<GoodsSalesDTO> list=orderMapper.getSalesTop(beginTime,endTime);
+        List<String> names = list.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList());
+        String nameList = StringUtils.join(names, ",");
+
+        List<Integer> numbers = list.stream().map(GoodsSalesDTO::getNumber).collect(Collectors.toList());
+        String numbersList = StringUtils.join(numbers, ",");
+        return SalesTop10ReportVO.builder()
+                .nameList(nameList)
+                .numberList(numbersList)
+                .build();
+    }
+
+    //查询订单数
     private Integer getOrderCount(LocalDateTime begin, LocalDateTime end, Integer status){
         return orderMapper.countByMap(begin,end,status);
     }
